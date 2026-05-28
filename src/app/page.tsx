@@ -870,12 +870,16 @@ export default function HomePage() {
         <div className="about-inner">
           <div>
             <div className="portrait-box">
-              <div className="portrait-initials">
-                <img src="/my-profile-pic.png" alt="Samir Karki" />
-              </div>
+              {/* Accent boxes live safely outside the image overflow crop */}
               <div className="portrait-accent-box" />
               <div className="portrait-accent-box2" />
+
+              {/* Image container handles the background, overflow, and picture loading */}
+              <div className="portrait-image-wrapper">
+                <img src="/my-profile-pic.png" alt="Samir Karki" />
+              </div>
             </div>
+
             <div className="skills-chips">
               {SKILLS.map((s) => (
                 <span key={s} className="chip">
