@@ -514,26 +514,61 @@ export default function HomePage() {
           gap: 80px; align-items: start;
         }
         .portrait-box {
-          background: var(--steel); aspect-ratio: 3/4;
-          position: relative; overflow: hidden; max-width: 340px;
-        }
-        .portrait-box::before {
-          content: ''; position: absolute; inset: 0;
-          background: linear-gradient(to bottom, transparent 50%, rgba(9,9,11,.7));
-        }
-        .portrait-initials {
-          width: 100%; height: 100%;
-          display: flex; align-items: center; justify-content: center;
-          font-family: var(--fd); font-size: 120px; color: rgba(255,255,255,.04);
-        }
-        .portrait-accent-box {
-          position: absolute; bottom: -12px; right: -12px;
-          width: 100px; height: 100px; border: 1px solid var(--accent); pointer-events: none;
-        }
-        .portrait-accent-box2 {
-          position: absolute; top: -12px; left: -12px;
-          width: 60px; height: 60px; border: 1px solid rgba(255,255,255,.08);
-        }
+  position: relative; 
+  max-width: 340px;
+  width: 100%;
+  aspect-ratio: 3/4;
+}
+
+/* New wrapper to contain the image and mask without hiding the accents */
+.portrait-image-wrapper {
+  position: absolute;
+  inset: 0;
+  background: var(--steel);
+  overflow: hidden; /* Keeps the gradient mask inside the photo frame */
+}
+
+.portrait-image-wrapper::before {
+  content: ''; 
+  position: absolute; 
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(9,9,11,.7));
+  z-index: 2; /* Keeps gradient on top of the image */
+  pointer-events: none;
+}
+
+/* Force your image to fill the layout space properly */
+.portrait-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.portrait-accent-box {
+  position: absolute; 
+  bottom: -12px; 
+  right: -12px;
+  width: 100px; 
+  height: 100px; 
+  border: 1px solid var(--accent); 
+  pointer-events: none;
+  z-index: 3; /* Places it outside and layered nicely */
+}
+
+.portrait-accent-box2 {
+  position: absolute; 
+  top: -12px; 
+  left: -12px;
+  width: 60px; 
+  height: 60px; 
+  border: 1px solid rgba(255,255,255,.08); 
+  pointer-events: none;
+  z-index: 3;
+}
+
         .skills-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
         .chip {
           font-family: var(--fm); font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
