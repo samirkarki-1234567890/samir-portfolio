@@ -632,7 +632,7 @@ export default function HomePage() {
         }
         .footer-logo { font-family: var(--fd); font-size: 20px; letter-spacing: 3px; color: var(--white); }
         .footer-logo span { color: var(--accent); }
-        .footer-copy { font-family: var(--fm); font-size: 11px; letter-spacing: 1px; color: var(--mist); }
+        .footer-copy { font-family: var(--fm); font-size: 11px; letter-spacing: 1px; color: var(--white); }
 
         /* ── Responsive ── */
         @media (max-width: 860px) {
@@ -835,7 +835,9 @@ export default function HomePage() {
         <div className="about-inner">
           <div>
             <div className="portrait-box">
-              <div className="portrait-initials">SK</div>
+              <div className="portrait-initials">
+                <img src="/my-profile-pic.png" alt="Samir Karki" />
+              </div>
               <div className="portrait-accent-box" />
               <div className="portrait-accent-box2" />
             </div>
