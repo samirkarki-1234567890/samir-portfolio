@@ -748,6 +748,17 @@ export default function HomePage() {
           .hero-content { grid-template-columns: 1fr; padding: 0 24px; }
           .hero-right { display: none; }
           .work-grid { grid-template-columns: 1fr; }
+          .work-card.featured {
+            aspect-ratio: auto;
+            min-height: 340px;
+            padding-top: 64px;
+          }
+          .featured-badge {
+            top: 20px; left: 20px;
+          }
+          .work-card.featured .work-arrow {
+            top: 20px; right: 20px;
+          }
           .case-item { grid-template-columns: 1fr; gap: 12px; padding: 28px; }
           .case-stat { text-align: left; }
           .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 48px; }
@@ -1134,8 +1145,8 @@ export default function HomePage() {
               <div className="ci-icon">✉</div>
               <div>
                 <div className="ci-label">Email</div>
-                <a className="ci-val" href="mailto:samir@samirkarki.dev">
-                  samir@samirkarki.dev
+                <a className="ci-val" href="mailto:samirkarki675@gmail.com">
+                  samirkarki675@gmail.com
                 </a>
               </div>
             </div>
