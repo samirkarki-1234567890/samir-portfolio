@@ -21,27 +21,18 @@ const SKILLS = [
 const WORK = [
   {
     num: "01",
-    title: "Project Alpha",
-    tags: ["Full-Stack", "React"],
-    desc: "A SaaS dashboard for real-time data monitoring. Built with React, Node.js and a WebSocket-powered live feed.",
+    title: "WildLens",
+    tags: ["AI/ML", "Computer Vision"],
+    desc: "A real-time bear species detection system built with YOLO11, deployed on a Raspberry Pi 4 with motion-triggered capture and cloud upload pipeline.",
+    url: "https://wildlens-e1f6q7mww-samirkarki-1234567890s-projects.vercel.app/",
+    featured: true,
   },
   {
     num: "02",
-    title: "API Gateway",
-    tags: ["Backend", "API"],
-    desc: "A high-throughput REST API serving 50k+ requests/day. Designed with rate limiting, caching, and zero-downtime deploys.",
-  },
-  {
-    num: "03",
-    title: "Field App",
-    tags: ["Mobile", "React Native"],
-    desc: "GPS-enabled mobile application for field teams. Offline-first architecture with background sync when connectivity resumes.",
-  },
-  {
-    num: "04",
-    title: "Cloud Infra",
-    tags: ["DevOps", "AWS"],
-    desc: "End-to-end CI/CD pipeline on AWS with automated deployments, monitoring alerts, and infrastructure-as-code via Terraform.",
+    title: "Coming Soon",
+    tags: ["Let's Collaborate"],
+    desc: "Got an idea worth building? I'm always open to new projects and collaborations — let's make something together.",
+    comingSoon: true,
   },
 ];
 
@@ -438,6 +429,7 @@ export default function HomePage() {
           aspect-ratio: 16/9; display: flex; flex-direction: column;
           justify-content: flex-end; padding: 36px;
           transition: background .3s; cursor: none;
+          text-decoration: none; color: inherit;
         }
         .work-card:hover { background: var(--mist); }
         .work-card::after {
@@ -473,6 +465,46 @@ export default function HomePage() {
           letter-spacing: 1px; margin-bottom: 10px;
         }
         .work-desc { font-size: 13px; line-height: 1.65; color: var(--silver); font-weight: 300; max-width: 380px; }
+
+        .work-card.featured {
+          grid-column: 1 / -1;
+          aspect-ratio: 32/9;
+          border: 1px solid rgba(232,240,74,.35);
+          animation: featuredGlow 2.6s ease-in-out 3;
+          background-image:
+            linear-gradient(180deg, rgba(9,9,11,.35) 0%, rgba(9,9,11,.55) 55%, rgba(9,9,11,.92) 100%),
+            url('/wildlens-preview.png');
+          background-size: cover;
+          background-position: center;
+        }
+        .work-card.featured:hover {
+          background-image:
+            linear-gradient(180deg, rgba(9,9,11,.45) 0%, rgba(9,9,11,.65) 55%, rgba(9,9,11,.94) 100%),
+            url('/wildlens-preview.png');
+        }
+        @keyframes featuredGlow {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(232,240,74,0); }
+          50% { box-shadow: 0 0 46px 6px rgba(232,240,74,.28); }
+        }
+        .featured-badge {
+          position: absolute; top: 28px; left: 36px;
+          font-family: var(--fm); font-size: 10px; letter-spacing: 2px;
+          text-transform: uppercase; color: var(--ink); background: var(--accent);
+          padding: 6px 12px;
+          display: flex; align-items: center; gap: 6px;
+        }
+        .featured-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--ink); animation: dotPulse 1.4s ease-in-out infinite; }
+        @keyframes dotPulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+        .work-card.coming-soon {
+          background: transparent;
+          border: 1px dashed var(--mist);
+          justify-content: center; align-items: center; text-align: center;
+          cursor: default;
+        }
+        .work-card.coming-soon:hover { background: rgba(255,255,255,.02); }
+        .work-card.coming-soon .work-title { color: var(--silver); }
+        .work-card.coming-soon .work-desc { max-width: 300px; margin: 0 auto; }
 
         /* ── Case studies ── */
         .cases-list { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 2px; }
@@ -800,21 +832,50 @@ export default function HomePage() {
             SEEING
           </h2>
           <div className="work-grid">
-            {WORK.map((w) => (
-              <div className="work-card" key={w.num}>
-                <div className="work-num">{w.num}</div>
-                <div className="work-arrow">↗</div>
-                <div className="work-tags">
-                  {w.tags.map((t) => (
-                    <span key={t} className="work-tag">
-                      {t}
-                    </span>
-                  ))}
+            {WORK.map((w) =>
+              w.url ? (
+                <a
+                  className={`work-card${w.featured ? " featured" : ""}`}
+                  key={w.num}
+                  href={w.url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {w.featured && (
+                    <span className="featured-badge">New · Featured</span>
+                  )}
+                  <div className="work-num">{w.num}</div>
+                  <div className="work-arrow">↗</div>
+                  <div className="work-tags">
+                    {w.tags.map((t) => (
+                      <span key={t} className="work-tag">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="work-title">{w.title}</div>
+                  <p className="work-desc">{w.desc}</p>
+                </a>
+              ) : (
+                <div
+                  className={`work-card${w.comingSoon ? " coming-soon" : ""}`}
+                  key={w.num}
+                  onClick={w.comingSoon ? () => scrollTo("contact") : undefined}
+                >
+                  {!w.comingSoon && <div className="work-num">{w.num}</div>}
+                  {!w.comingSoon && <div className="work-arrow">↗</div>}
+                  <div className="work-tags">
+                    {w.tags.map((t) => (
+                      <span key={t} className="work-tag">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="work-title">{w.title}</div>
+                  <p className="work-desc">{w.desc}</p>
                 </div>
-                <div className="work-title">{w.title}</div>
-                <p className="work-desc">{w.desc}</p>
-              </div>
-            ))}
+              ),
+            )}
           </div>
         </div>
       </section>
