@@ -8,7 +8,8 @@ const supabase = createClient(
   "sb_publishable_4HdL2YSJhtdf5z1-7afGbw_wCqsjR87",
 );
 
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const BASE_PATH =
+  process.env.NODE_ENV === "production" ? "/samir-portfolio" : "";
 
 /* ── Data ── */
 const SKILLS = [
