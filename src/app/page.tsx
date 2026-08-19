@@ -1,6 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  "https://yyagowwloohvtmrjqduj.supabase.co",
+  "sb_publishable_4HdL2YSJhtdf5z1-7afGbw_wCqsjR87",
+);
 
 /* ── Data ── */
 const SKILLS = [
@@ -95,6 +101,46 @@ export default function HomePage() {
   const [loaded, setLoaded] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [cursorMode, setCursorMode] = useState<"neon" | "blend">("neon");
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle",
+  );
+
+  const handleFormChange = (
+    field: "name" | "email" | "subject" | "message",
+    value: string,
+  ) => {
+    setForm((f) => ({ ...f, [field]: value }));
+  };
+
+  const handleSubmit = async () => {
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+      setStatus("error");
+      return;
+    }
+    setStatus("sending");
+    const { error } = await supabase.from("contact_messages").insert([
+      {
+        name: form.name,
+        email: form.email,
+        subject: form.subject,
+        message: form.message,
+      },
+    ]);
+    if (error) {
+      console.error(error);
+      setStatus("error");
+      return;
+    }
+    setStatus("sent");
+    setForm({ name: "", email: "", subject: "", message: "" });
+  };
 
   useEffect(() => {
     const t = setTimeout(() => setLoaded(true), 120);
@@ -1010,6 +1056,8 @@ export default function HomePage() {
                 className="cf-input"
                 type="text"
                 placeholder="Jane Smith"
+                value={form.name}
+                onChange={(e) => handleFormChange("name", e.target.value)}
               />
             </div>
             <div className="cf-field">
@@ -1018,6 +1066,8 @@ export default function HomePage() {
                 className="cf-input"
                 type="email"
                 placeholder="jane@company.com"
+                value={form.email}
+                onChange={(e) => handleFormChange("email", e.target.value)}
               />
             </div>
             <div className="cf-field">
@@ -1026,6 +1076,8 @@ export default function HomePage() {
                 className="cf-input"
                 type="text"
                 placeholder="Project inquiry, collaboration..."
+                value={form.subject}
+                onChange={(e) => handleFormChange("subject", e.target.value)}
               />
             </div>
             <div className="cf-field">
@@ -1033,9 +1085,41 @@ export default function HomePage() {
               <textarea
                 className="cf-input"
                 placeholder="Tell me about your project..."
+                value={form.message}
+                onChange={(e) => handleFormChange("message", e.target.value)}
               />
             </div>
-            <button className="cf-submit">Send Message →</button>
+            <button
+              className="cf-submit"
+              onClick={handleSubmit}
+              disabled={status === "sending"}
+            >
+              {status === "sending" ? "Sending..." : "Send Message →"}
+            </button>
+            {status === "sent" && (
+              <p
+                style={{
+                  marginTop: 14,
+                  fontFamily: "var(--fm)",
+                  fontSize: 12,
+                  color: "var(--accent2)",
+                }}
+              >
+                Message sent — I&apos;ll get back to you soon.
+              </p>
+            )}
+            {status === "error" && (
+              <p
+                style={{
+                  marginTop: 14,
+                  fontFamily: "var(--fm)",
+                  fontSize: 12,
+                  color: "#ff6b6b",
+                }}
+              >
+                Please fill in your name, email, and message, then try again.
+              </p>
+            )}
           </div>
 
           <div>
@@ -1079,7 +1163,7 @@ export default function HomePage() {
               </a>
               <a
                 className="social-btn"
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/samir-karki-0291b433b/"
                 target="_blank"
                 rel="noreferrer"
                 title="LinkedIn"
@@ -1088,7 +1172,7 @@ export default function HomePage() {
               </a>
               <a
                 className="social-btn"
-                href="https://twitter.com"
+                href="https://x.com/SamirKa74779692"
                 target="_blank"
                 rel="noreferrer"
                 title="Twitter/X"
