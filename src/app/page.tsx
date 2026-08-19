@@ -8,6 +8,8 @@ const supabase = createClient(
   "sb_publishable_4HdL2YSJhtdf5z1-7afGbw_wCqsjR87",
 );
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 /* ── Data ── */
 const SKILLS = [
   "React",
@@ -517,16 +519,8 @@ export default function HomePage() {
           aspect-ratio: 32/9;
           border: 1px solid rgba(232,240,74,.35);
           animation: featuredGlow 2.6s ease-in-out 3;
-          background-image:
-            linear-gradient(180deg, rgba(9,9,11,.35) 0%, rgba(9,9,11,.55) 55%, rgba(9,9,11,.92) 100%),
-            url('/wildlens-preview.png');
           background-size: cover;
           background-position: center;
-        }
-        .work-card.featured:hover {
-          background-image:
-            linear-gradient(180deg, rgba(9,9,11,.45) 0%, rgba(9,9,11,.65) 55%, rgba(9,9,11,.94) 100%),
-            url('/wildlens-preview.png');
         }
         @keyframes featuredGlow {
           0%, 100% { box-shadow: 0 0 0 0 rgba(232,240,74,0); }
@@ -886,6 +880,13 @@ export default function HomePage() {
                   href={w.url}
                   target="_blank"
                   rel="noreferrer"
+                  style={
+                    w.featured
+                      ? {
+                          backgroundImage: `linear-gradient(180deg, rgba(9,9,11,.35) 0%, rgba(9,9,11,.55) 55%, rgba(9,9,11,.92) 100%), url('${BASE_PATH}/wildlens-preview.png')`,
+                        }
+                      : undefined
+                  }
                 >
                   {w.featured && (
                     <span className="featured-badge">New · Featured</span>
@@ -983,7 +984,10 @@ export default function HomePage() {
 
               {/* Image container handles the background, overflow, and picture loading */}
               <div className="portrait-image-wrapper">
-                <img src="/my-profile-pic.png" alt="Samir Karki" />
+                <img
+                  src={`${BASE_PATH}/my-profile-pic.png`}
+                  alt="Samir Karki"
+                />
               </div>
             </div>
 
@@ -1181,7 +1185,7 @@ export default function HomePage() {
               </a>
               <a
                 className="social-btn"
-                href="/resume.pdf"
+                href={`${BASE_PATH}/resume.pdf`}
                 target="_blank"
                 rel="noreferrer"
                 title="Resume"
