@@ -1,24 +1,25 @@
 import type { NextConfig } from "next";
 
-// Check if the project is building inside GitHub Actions
-const isProd = process.env.NODE_ENV === 'production';
+// Detect if the build is running on Cloudflare Pages
+const isCloudflare = process.env.CF_PAGES === 'true';
 const repoName = 'samir-portfolio';
-const basePath = isProd ? `/${repoName}` : '';
+
+// GitHub Pages needs the repo name path, Cloudflare doesn't
+const basePath = isCloudflare ? '' : `/${repoName}`;
+const assetPrefix = isCloudflare ? '' : `/${repoName}/`;
 
 const nextConfig: NextConfig = {
-  // Only use export and basePath in production deployment
-  output: isProd ? 'export' : undefined,
+  output: 'export',
   basePath,
-  assetPrefix: isProd ? `/${repoName}/` : '',
+  assetPrefix,
 
-  images: { unoptimized: true },
+  images: { 
+    unoptimized: true 
+  },
 
-  // Expose basePath to client-side code so <img> tags etc. can prefix it
   env: {
     NEXT_PUBLIC_BASE_PATH: basePath,
   },
-
-  // Keep your other existing config settings below
 };
 
 export default nextConfig;
